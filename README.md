@@ -27,7 +27,7 @@
 ```bash
 $ python bars.py
 ```
-Если нет переменной:
+Если нет переменной требуется путь до файла:
 
 ```bash
 $ python bars.py bars.json
