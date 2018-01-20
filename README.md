@@ -19,7 +19,7 @@
 Если есть API-mos-key в переменных окружения:
 Запуск на Linux:
 ```bash
-$ python bars.py # possibly requires call of python3 executive instead of just python
+$ python bars.py
 ```
 Если нет переменной:
 Запуск на Linux:
