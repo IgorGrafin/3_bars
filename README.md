@@ -4,7 +4,7 @@
 
 # Установка
 
-```  pip instal requirements.txt ```
+```  pip install requirements.txt ```
 
 Для работы с сайтом data.mos.ru через API необходимо добавить API-ключ разработчика, выданного при регистрации, в переменные окружения в  ОС(Environment variables), или IDE(Pycharm). 
 
