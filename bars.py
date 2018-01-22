@@ -21,18 +21,23 @@ def load_data_from_api(api_key):
 
 
 def get_biggest_bar(json_data):
-    max_bar = max(json_data["features"], key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
-    return max_bar["properties"]["Attributes"]["Name"], max_bar["properties"]["Attributes"]["SeatsCount"]
+    max_bar = max(json_data["features"],
+                  key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
+    return max_bar["properties"]["Attributes"]["Name"], \
+           max_bar["properties"]["Attributes"]["SeatsCount"]
 
 
 def get_smallest_bar(json_data):
-    min_bar = min(json_data["features"], key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
-    return min_bar["properties"]["Attributes"]["Name"], min_bar["properties"]["Attributes"]["SeatsCount"]
+    min_bar = min(json_data["features"],
+                  key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
+    return min_bar["properties"]["Attributes"]["Name"], \
+           min_bar["properties"]["Attributes"]["SeatsCount"]
 
 
 def get_closest_bar(json_data, my_coord):
     closest_bar = min(json_data["features"],
-                      key=lambda bar: vincenty(my_coord, reversed(bar["geometry"]["coordinates"])).meters)
+                      key=lambda bar:
+                      vincenty(my_coord, reversed(bar["geometry"]["coordinates"])).meters)
 
     return [vincenty(my_coord, reversed(closest_bar["geometry"]["coordinates"])).meters,
             closest_bar["properties"]["Attributes"]["Name"],
@@ -41,26 +46,26 @@ def get_closest_bar(json_data, my_coord):
 
 def get_data():
     if os.getenv("API-mos-key"):
-        json_data = load_data_from_api(os.environ["API-mos-key"])
         print("Загрузка онлайн")
+        json_data = load_data_from_api(os.environ["API-mos-key"])
         if json_data is None:
             print("неверный API key")
             return None
-    else:
-        try:
-            json_data = load_data_from_file(sys.argv[1])
-            print("Загрузка из файла")
-        except FileNotFoundError:
-            print("Файл %s не найден!" % sys.argv[1])
-            return None
-        except json.decoder.JSONDecodeError:
-            print("Некорректный JSON!")
-            return None
-        except IndexError:
-            print("Введите путь до файла с данными в качестве аргумента. "
-                  "Пример: 'python pprint_json.py in.json' ")
-            return None
-    return json_data
+        return json_data
+    try:
+        print("Загрузка из файла")
+        json_data = load_data_from_file(sys.argv[1])
+        return json_data
+    except FileNotFoundError:
+        print("Файл %s не найден!" % sys.argv[1])
+        return None
+    except json.decoder.JSONDecodeError:
+        print("Некорректный JSON!")
+        return None
+    except IndexError:
+        print("Введите путь до файла с данными в качестве аргумента. "
+              "Пример: 'python pprint_json.py in.json' ")
+        return None
 
 
 if __name__ == "__main__":
