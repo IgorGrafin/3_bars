@@ -14,7 +14,6 @@ def load_data_from_file(file_path):
 def load_data_from_api(api_key):
     url = "https://apidata.mos.ru/v1/features/1796?"
     request = requests.get(url, params={"api_key": api_key})
-    print(request.url)
     if request.ok:
         return request.json()
     else:
@@ -22,8 +21,6 @@ def load_data_from_api(api_key):
 
 
 def get_biggest_bar(json_data):
-    max_seats = max([bar["properties"]["Attributes"]["SeatsCount"] for bar in json_data["features"]])
-
     max_bar = max(json_data["features"], key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
     return max_bar["properties"]["Attributes"]["Name"], max_bar["properties"]["Attributes"]["SeatsCount"]
 
