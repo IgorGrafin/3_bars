@@ -16,8 +16,6 @@ def load_data_from_api(api_key):
     request = requests.get(url, params={"api_key": api_key})
     if request.ok:
         return request.json()
-    else:
-        return None
 
 
 def get_biggest_bar(json_data):
@@ -50,22 +48,19 @@ def get_data():
         json_data = load_data_from_api(os.environ["API-mos-key"])
         if json_data is None:
             print("неверный API key")
-            return None
         return json_data
-    try:
-        print("Загрузка из файла")
-        json_data = load_data_from_file(sys.argv[1])
-        return json_data
-    except FileNotFoundError:
-        print("Файл %s не найден!" % sys.argv[1])
-        return None
-    except json.decoder.JSONDecodeError:
-        print("Некорректный JSON!")
-        return None
-    except IndexError:
-        print("Введите путь до файла с данными в качестве аргумента. "
-              "Пример: 'python pprint_json.py in.json' ")
-        return None
+    if len(sys.argv) == 2:
+        try:
+            print("Загрузка из файла")
+            json_data = load_data_from_file(sys.argv[1])
+            return json_data
+        except FileNotFoundError:
+            print("Файл %s не найден!" % sys.argv[1])
+        except json.decoder.JSONDecodeError:
+            print("Некорректный JSON!")
+    else:
+            print("Введите путь до файла с данными в качестве аргумента. "
+                  "Пример: 'python pprint_json.py in.json' ")
 
 
 if __name__ == "__main__":
