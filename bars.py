@@ -14,13 +14,16 @@ def load_data_from_file(file_path):
 def load_data_from_api(api_key):
     url = "https://apidata.mos.ru/v1/features/1796?"
     request = requests.get(url, params={"api_key": api_key})
-    if request.ok:
-        return request.json()
+    if not request.ok:
+        print("Неверный API-key")
+        return None
+    return request.json()
 
 
 def get_biggest_bar(json_data):
     max_bar = max(json_data["features"],
                   key=lambda bar: bar["properties"]["Attributes"]["SeatsCount"])
+
     return max_bar["properties"]["Attributes"]["Name"], \
            max_bar["properties"]["Attributes"]["SeatsCount"]
 
@@ -42,18 +45,14 @@ def get_closest_bar(json_data, my_coord):
             closest_bar["properties"]["Attributes"]["Address"]]
 
 
-def get_data():
+def get_data():  # Ну как проще-то, Валли?
     if os.getenv("API-mos-key"):
         print("Загрузка онлайн")
-        json_data = load_data_from_api(os.environ["API-mos-key"])
-        if json_data is None:
-            print("неверный API key")
-        return json_data
+        return load_data_from_api(os.environ["API-mos-key"])
 
     try:
         print("Загрузка из файла")
-        json_data = load_data_from_file(sys.argv[1])
-        return json_data
+        return load_data_from_file(sys.argv[1])
     except FileNotFoundError:
         print("Файл %s не найден!" % sys.argv[1])
     except json.decoder.JSONDecodeError:
