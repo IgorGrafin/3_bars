@@ -6,7 +6,7 @@ from geopy.distance import vincenty
 
 
 def load_data_from_file(file_path):
-    with open(file_path, "r", encoding="UTF-8") as file:
+    with open(file_path, "r") as file:
         json_data = json.load(file)
         return json_data
 
@@ -49,18 +49,18 @@ def get_data():
         if json_data is None:
             print("неверный API key")
         return json_data
-    if len(sys.argv) == 2:
-        try:
-            print("Загрузка из файла")
-            json_data = load_data_from_file(sys.argv[1])
-            return json_data
-        except FileNotFoundError:
-            print("Файл %s не найден!" % sys.argv[1])
-        except json.decoder.JSONDecodeError:
-            print("Некорректный JSON!")
-    else:
-            print("Введите путь до файла с данными в качестве аргумента. "
-                  "Пример: 'python pprint_json.py in.json' ")
+
+    try:
+        print("Загрузка из файла")
+        json_data = load_data_from_file(sys.argv[1])
+        return json_data
+    except FileNotFoundError:
+        print("Файл %s не найден!" % sys.argv[1])
+    except json.decoder.JSONDecodeError:
+        print("Некорректный JSON!")
+    except IndexError:
+        print("Введите путь до файла с данными в качестве аргумента."
+              "Пример: 'python pprint_json.py in.json' ")
 
 
 if __name__ == "__main__":
