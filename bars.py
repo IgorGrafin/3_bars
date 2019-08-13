@@ -90,6 +90,6 @@ if __name__ == "__main__":
         sys.exit("Некорректные координаты. Пример: 55.691484, 37.568782")
 
     distance, closest_bar = get_closest_bar(bars, coordinates)
-    print("\nБлижайший к вам бар находится на расстоянии {0} метров"
+    print("\nБлижайший к вам бар находится на расстоянии {0} метров0"
           .format(distance))
     print_bar(closest_bar)
